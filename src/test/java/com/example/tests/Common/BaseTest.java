@@ -2,6 +2,8 @@ package com.example.tests;
 
 import com.microsoft.playwright.*;
 import org.testng.annotations.*;
+import org.xml.sax.Locator;
+
 import com.example.config.Config;
 import com.microsoft.playwright.options.LoadState;
 
@@ -12,7 +14,8 @@ public class BaseTest {
 
     @BeforeClass
     public void setup() {
-        // Initialize Playwright and launch a Chromium browser (non-headless for visibility)
+        // Initialize Playwright and launch a Chromium browser (non-headless for
+        // visibility)
         playwright = Playwright.create();
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
         page = browser.newContext().newPage();
@@ -54,19 +57,19 @@ public class BaseTest {
         // Open the global navigation menu
         page.getByLabel(menuLocator).waitFor();
         page.getByLabel(menuLocator).click();
-    
-        page.waitForTimeout(3000); // temporary wait for UI to settle
-    
+
         // Open the repo filter
+        page.locator("#filter-button-filter-repositories svg")
+                .waitFor(new Locator.WaitForOptions().setTimeout(5000));
         page.locator("#filter-button-filter-repositories svg").click();
-    
+
         // Search for the repo by name
         page.getByPlaceholder("Filter repositories").fill(repoName);
         page.waitForTimeout(1000); // allow time for search results to load
-    
+
         // Verify the search result contains the expected repo
         assert page.getByText(repoTitleLocator).count() == 1;
-    
+
         // Open repo and verify the title matches
         page.getByText(repoTitleLocator).click();
         assert page.locator("#repo-title-component a").textContent().equals(repoName);
