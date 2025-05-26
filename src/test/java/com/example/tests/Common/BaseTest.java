@@ -46,4 +46,29 @@ public class BaseTest {
     protected void openSubmenu(String submenuName) {
         page.locator(String.format("//*[contains(@class,'ItemLabel') and text()='%s']", submenuName)).click();
     }
+
+    protected void searchAndOpenRepository(String repoName) {
+        String menuLocator = "Open global navigation menu";
+        String repoTitleLocator = String.format("AlexTesting01/%s Jump to", repoName);
+
+        // Open the global navigation menu
+        page.getByLabel(menuLocator).waitFor();
+        page.getByLabel(menuLocator).click();
+    
+        page.waitForTimeout(3000); // temporary wait for UI to settle
+    
+        // Open the repo filter
+        page.locator("#filter-button-filter-repositories svg").click();
+    
+        // Search for the repo by name
+        page.getByPlaceholder("Filter repositories").fill(repoName);
+        page.waitForTimeout(1000); // allow time for search results to load
+    
+        // Verify the search result contains the expected repo
+        assert page.getByText(repoTitleLocator).count() == 1;
+    
+        // Open repo and verify the title matches
+        page.getByText(repoTitleLocator).click();
+        assert page.locator("#repo-title-component a").textContent().equals(repoName);
+    }
 }
