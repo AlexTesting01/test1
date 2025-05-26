@@ -20,7 +20,7 @@ public class BaseTest {
         page = browser.newContext().newPage();
 
         // Navigate to GitHub login page
-        page.navigate("https://github.com/login");
+        page.navigate(Config.URL);
 
         // Perform login using credentials from the config
         page.fill("#login_field", Config.GITHUB_EMAIL);

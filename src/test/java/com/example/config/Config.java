@@ -8,4 +8,5 @@ public class Config {
     public static final String USER_NAME = (username != null && !username.isEmpty()) ? username : "AlexTesting1";
     public static final String REPO_NAME = "test1";
     public static final String BRANCH = "master";
+    public static final String URL = "https://github.com/login";
 }
