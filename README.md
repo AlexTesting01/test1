@@ -11,7 +11,7 @@ It automates key UI scenarios for GitHub, such as logging in, searching reposito
 - 📁 Repo content vs local folder comparison
 
 ## 📁 Project Structure
-<pre><code>```bash
+<pre><code>
 test1/
 ├── src/
 │   └── test/
@@ -28,7 +28,7 @@ test1/
 │                       ├── RepoContentTest.java
 │                       └── ProfileSettingsTest.java
 └── testng.xml                                # TestNG suite configuration
-```</code></pre>
+</code></pre>
 
 ## Technologies
 - Java + Maven
@@ -49,31 +49,32 @@ test1/
 
 1. Clone this repository:
 
-   ```bash
+   <pre><code>
    git clone https://github.com/AlexTesting01/test1.git
    cd test1
-
+   </code></pre>
 2. Install dependencies:
-
+    <pre><code>
     mvn clean install   
-
+    </code></pre>
 3. Set your GitHub credentials in Config.java or use as command line params: 
 
+   <pre><code>
     public class Config {
         public static final String GITHUB_EMAIL = "your-email";
         public static final String GITHUB_PASSWORD = "your-password";
-        ....
     }
-
+    </code></pre>
     or
 
     -Dgithub.email="your-email"
     -Dgithub.password="your-password"
 
 4. Run all tests:
-
+    <pre><code>
     mvn test
-
+    </code></pre>
     or with params
-
+    <pre><code>
     mvn test -Dgithub.email="your-email"  -Dgithub.password="your-password"
+    </code></pre>
