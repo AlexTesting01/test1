@@ -11,6 +11,7 @@ It automates key UI scenarios for GitHub, such as logging in, searching reposito
 - 📁 Repo content vs local folder comparison
 
 ## 📁 Project Structure
+<pre><code>```bash
 test1/
 ├── src/
 │   └── test/
@@ -27,7 +28,7 @@ test1/
 │                       ├── RepoContentTest.java
 │                       └── ProfileSettingsTest.java
 └── testng.xml                                # TestNG suite configuration
-
+```</code></pre>
 
 ## Technologies
 - Java + Maven
