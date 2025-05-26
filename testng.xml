@@ -8,6 +8,7 @@
             <class name="com.example.tests.LoginTest"/>
             <class name="com.example.tests.RepoSearchTest"/> 
             <class name="com.example.tests.ProfileSettingsTest"/> 
+            <class name="com.example.tests.RepoContentTest"/> 
         </classes>
     </test>
 </suite>
