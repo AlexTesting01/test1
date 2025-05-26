@@ -11,21 +11,23 @@ It automates key UI scenarios for GitHub, such as logging in, searching reposito
 - 📁 Repo content vs local folder comparison
 
 ## 📁 Project Structure
+test1/
 ├── src/
-│ └── test/
-│ └── java/
-│ └── com/
-│ └── example/
-│ ├── config/ # Credentials & config
-│ ├── listeners/ # Suite logging
-│ ├── utils/ # File, DOM & image utilities
-│ └── tests/ # Main test cases
-│ ├── BaseTest.java
-│ ├── LoginTest.java
-│ ├── RepoSearchTest.java
-│ ├── RepoContentTest.java
-│ └── ProfileSettingsTest.java
-└── testng.xml # TestNG suite configuration
+│   └── test/
+│       └── java/
+│           └── com/
+│               └── example/
+│                   ├── config/               # Credentials & config
+│                   ├── listeners/            # Suite logging
+│                   ├── utils/                # File, DOM & image utilities
+│                   └── tests/                # Main test cases
+│                       ├── BaseTest.java
+│                       ├── LoginTest.java
+│                       ├── RepoSearchTest.java
+│                       ├── RepoContentTest.java
+│                       └── ProfileSettingsTest.java
+└── testng.xml                                # TestNG suite configuration
+
 
 ## Technologies
 - Java + Maven
