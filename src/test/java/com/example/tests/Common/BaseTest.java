@@ -2,7 +2,6 @@ package com.example.tests;
 
 import com.microsoft.playwright.*;
 import org.testng.annotations.*;
-import org.xml.sax.Locator;
 
 import com.example.config.Config;
 import com.microsoft.playwright.options.LoadState;
