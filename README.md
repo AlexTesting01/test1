@@ -35,6 +35,7 @@ test1/
 - Playwright for UI automation
 - TestNG for test orchestration
 - Parallel test execution support
+- Allure report
 
 ## 🚀 Getting Started
 
@@ -77,4 +78,13 @@ test1/
     or with params
     <pre><code>
     mvn test -Dgithub.email="your-email"  -Dgithub.password="your-password"
+    </code></pre>
+
+5. Generate Allure report
+     <pre><code>
+    mvn allure:report
+    </code></pre>
+    and
+    <pre><code>
+    mvn allure:serve
     </code></pre>

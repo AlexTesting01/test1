@@ -24,6 +24,11 @@
     <artifactId>jackson-databind</artifactId>
     <version>2.15.2</version>
 </dependency>
+    <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-testng</artifactId>
+        <version>2.24.0</version>
+    </dependency>
 
   </dependencies>
 
@@ -47,6 +52,14 @@
           <mainClass>com.example.runner.PlaywrightRunner</mainClass>
         </configuration>
       </plugin>
+     <plugin>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-maven</artifactId>
+      <version>2.11.2</version>
+      <configuration>
+        <resultsDirectory>${project.basedir}/allure-results</resultsDirectory>
+      </configuration>
+    </plugin>
     </plugins>
   </build>
 </project>
