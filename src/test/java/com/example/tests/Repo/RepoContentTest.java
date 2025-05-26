@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.testng.annotations.Test;
 import com.microsoft.playwright.options.*;
-
+import com.example.config.Config;
 import com.example.utils.FileUtils;
 import com.example.utils.DOMUtils;
 import com.microsoft.playwright.*;
@@ -15,15 +15,13 @@ public class RepoContentTest extends BaseTest {
 
     @Test
     public void testRepoSearch() {
-        String repoName = "test1";
-        String branchName = "master";
         String path = "src/test/java/com/example/tests/Common";
         String file = "BaseTest.java";
 
-        searchAndOpenRepository(repoName);
+        searchAndOpenRepository(Config.REPO_NAME);
 
         page.getByTestId("anchor-button").click();
-        page.getByLabel(branchName).click();
+        page.getByLabel(Config.BRANCH).click();
         page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("src/test/java/com/example, (")).click();
         page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("tests, (Directory)")).click();
         page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Common, (Directory)")).click();
