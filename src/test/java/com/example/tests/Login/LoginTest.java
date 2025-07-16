@@ -1,46 +1,65 @@
 package com.example.tests;
 
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
+
 import com.example.config.Config;
-import com.microsoft.playwright.options.*;
-import com.microsoft.playwright.*;
+import com.example.tests.Common.BaseTest;
 
 public class LoginTest extends BaseTest {
 
+    /** Tests opening the user menu. */
     @Test
     public void testOpenUserMenu() {
-        // Opens the user navigation menu (assumes login is already successful)
         openUserMenu();
     }
 
+    /** Verifies successful login. */
     @Test(dependsOnMethods = "testOpenUserMenu")
     public void testLoginSuccess() {
+        boolean isUserTitleVisible = getWebDriverWait(15).until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector(String.format("[title='%s']", Config.USER_NAME))))
+                .isDisplayed();
 
-        // Assert that the logged-in user's name is visible in the top bar
-        assert page.isVisible(String.format("[title='%s']", Config.USER_NAME))
+        assert isUserTitleVisible
                 : "User profile title not visible - login might have failed";
     }
 
+    /** Tests user logout. */
     @Test(dependsOnMethods = "testLoginSuccess")
     public void testLogout() {
+        openSubmenu("Sign out", 2);
 
-        openSubmenu("Sign out");
-        page.getByText("Sign out from all accounts").click();
-        // Ensure the user is no longer visible in the UI (logout was successful)
-        assert !page.isVisible(String.format("[title='%s']", Config.USER_NAME))
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10)); // Consider removing implicit wait
+        driver.findElement(By.xpath("//*[@value='Sign out from all accounts']")).click();
+
+        boolean isUserTitleInvisible = getWebDriverWait(10).until(ExpectedConditions.invisibilityOfElementLocated(
+                By.cssSelector(String.format("[title='%s']", Config.USER_NAME))));
+
+        assert isUserTitleInvisible
                 : "User still visible after logout - logout may have failed";
     }
 
+    /** Tests login with invalid credentials. */
     @Test(dependsOnMethods = "testLogout")
     public void failedLogin() {
-        // Attempt login with invalid credentials
-        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Sign in")).click();
-        page.getByLabel("Username or email address").fill("123@123.com");
-        page.getByLabel("Password").fill("123");
-        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign in").setExact(true)).click();
-        // Assert that the login fails with the expected error message
-        assert page.getByText("Incorrect username").isVisible()
+        driver.navigate().to(Config.URL);
+
+        driver.findElement(By.id("login_field")).clear();
+        driver.findElement(By.id("password")).clear();
+
+        driver.findElement(By.id("login_field")).sendKeys("123@123.com");
+        driver.findElement(By.id("password")).sendKeys("123");
+
+        getWebDriverWait(5).until(ExpectedConditions.elementToBeClickable(By.name("commit"))).click();
+
+        boolean isErrorMessageVisible = getWebDriverWait(7).until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(text(),'Incorrect username or password.')] | //div[contains(text(),'Incorrect username')]"))).isDisplayed();
+
+        assert isErrorMessageVisible
                 : "Expected error message not visible for failed login attempt";
     }
-
 }

@@ -4,36 +4,54 @@
                              http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.example</groupId>
-  <artifactId>github-test</artifactId>
+  <artifactId>selenium-java</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <dependencies>
+    <!-- Selenium WebDriver -->
     <dependency>
-      <groupId>com.microsoft.playwright</groupId>
-      <artifactId>playwright</artifactId>
-      <version>1.52.0</version>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>4.33.0</version> 
     </dependency>
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-devtools-v137</artifactId> <version>4.33.0</version>
+</dependency>
+
+    <!-- WebDriverManager for driver binaries -->
+    <dependency>
+      <groupId>io.github.bonigarcia</groupId>
+      <artifactId>webdrivermanager</artifactId>
+      <version>5.8.0</version>
+    </dependency>
+
+    <!-- TestNG -->
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>7.8.0</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Jackson (unchanged) -->
     <dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
-    <version>2.15.2</version>
-</dependency>
-    <dependency>
-        <groupId>io.qameta.allure</groupId>
-        <artifactId>allure-testng</artifactId>
-        <version>2.24.0</version>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.15.2</version>
     </dependency>
 
+    <!-- Allure reporting -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-testng</artifactId>
+      <version>2.24.0</version>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <!-- TestNG runner -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -44,22 +62,26 @@
           </suiteXmlFiles>
         </configuration>
       </plugin>
+
+      <!-- For manually running main classes -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
-          <mainClass>com.example.runner.PlaywrightRunner</mainClass>
+          <mainClass>com.example.runner.SeleniumRunner</mainClass>
         </configuration>
       </plugin>
-     <plugin>
-      <groupId>io.qameta.allure</groupId>
-      <artifactId>allure-maven</artifactId>
-      <version>2.11.2</version>
-      <configuration>
-        <resultsDirectory>${project.basedir}/allure-results</resultsDirectory>
-      </configuration>
-    </plugin>
+
+      <!-- Allure plugin -->
+      <plugin>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
+        <version>2.11.2</version>
+        <configuration>
+          <resultsDirectory>${project.basedir}/allure-results</resultsDirectory>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>

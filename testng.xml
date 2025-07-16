@@ -1,4 +1,6 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<!-- mvn clean test -Dgithub.email="abraslik.testing@gmail.com" -Dgithub.password="Abrasliktesting1" -->
 <suite name="GitHub Sanity Suite" parallel="methods" thread-count="4">
  <listeners>
     <listener class-name="com.example.listeners.TestLogger"/>
@@ -6,9 +8,6 @@
   <test name="GitHubTests">
         <classes>
             <class name="com.example.tests.LoginTest"/>
-            <class name="com.example.tests.RepoSearchTest"/> 
-            <class name="com.example.tests.ProfileSettingsTest"/> 
-            <class name="com.example.tests.RepoContentTest"/> 
         </classes>
     </test>
 </suite>

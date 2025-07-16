@@ -1,76 +1,59 @@
-package com.example.tests;
+package com.example.tests.Common;
 
-import com.microsoft.playwright.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.*;
+import java.time.Duration;
+
 import org.testng.annotations.*;
 
 import com.example.config.Config;
-import com.microsoft.playwright.options.LoadState;
 
 public class BaseTest {
-    protected Playwright playwright;
-    protected Browser browser;
-    protected Page page;
+    protected WebDriver driver;
 
     @BeforeClass
     public void setup() {
-        // Initialize Playwright and launch a Chromium browser (non-headless for
-        // visibility)
-        playwright = Playwright.create();
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
-        page = browser.newContext().newPage();
-
-        // Navigate to GitHub login page
-        page.navigate(Config.URL);
-
-        // Perform login using credentials from the config
-        page.fill("#login_field", Config.GITHUB_EMAIL);
-        page.fill("#password", Config.GITHUB_PASSWORD);
-        page.click("[name='commit']");
+        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized");
+        driver = new ChromeDriver(options);
+        driver.navigate().to(Config.URL);
+        driver.findElement(By.id("login_field")).sendKeys(Config.EMAIL);
+        driver.findElement(By.id("password")).sendKeys(Config.PASSWORD);
+        driver.findElement(By.name("commit")).click();
     }
 
     @AfterClass
     public void tearDown() {
-        // Close resources after each test to ensure isolation and cleanup
-        if (page != null)
-            page.close();
-        if (browser != null)
-            browser.close();
-        if (playwright != null)
-            playwright.close();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 
+    /** Clicks the user navigation menu. */
     protected void openUserMenu() {
         String selector = "[aria-label='Open user navigation menu']";
-        page.waitForSelector(selector);
-        page.locator(selector).click();
+        getWebDriverWait(10).until(ExpectedConditions.elementToBeClickable(By.cssSelector(selector))).click();
     }
 
-    protected void openSubmenu(String submenuName) {
-        page.locator(String.format("//*[contains(@class,'ItemLabel') and text()='%s']", submenuName)).click();
+    /**
+     * Clicks a submenu item by text, with a custom timeout.
+     * @param submenuName Text of the submenu item.
+     * @param timeoutInSeconds Max wait time for item to be clickable.
+     */
+    protected void openSubmenu(String submenuName, long timeoutInSeconds) {
+        By submenuLocator = By.xpath(String.format("//*[contains(@class,'ItemLabel') and text()='%s']", submenuName));
+        getWebDriverWait(timeoutInSeconds).until(ExpectedConditions.elementToBeClickable(submenuLocator)).click();
     }
 
-    protected void searchAndOpenRepository(String repoName) {
-        String menuLocator = "Open global navigation menu";
-        String repoTitleLocator = String.format("AlexTesting01/%s Jump to", repoName);
-
-        // Open the global navigation menu
-        page.getByLabel(menuLocator).waitFor();
-        page.getByLabel(menuLocator).click();
-
-        // Open the repo filter
-        page.locator("#filter-button-filter-repositories svg")
-                .waitFor(new Locator.WaitForOptions().setTimeout(5000));
-        page.locator("#filter-button-filter-repositories svg").click();
-
-        // Search for the repo by name
-        page.getByPlaceholder("Filter repositories").fill(repoName);
-        page.waitForTimeout(1000); // allow time for search results to load
-
-        // Verify the search result contains the expected repo
-        assert page.getByText(repoTitleLocator).count() == 1;
-
-        // Open repo and verify the title matches
-        page.getByText(repoTitleLocator).click();
-        assert page.locator("#repo-title-component a").textContent().equals(repoName);
+    /**
+     * Returns WebDriverWait instance with specified timeout.
+     * @param seconds Timeout duration.
+     */
+    protected WebDriverWait getWebDriverWait(long seconds) {
+        return new WebDriverWait(driver, Duration.ofSeconds(seconds));
     }
 }
